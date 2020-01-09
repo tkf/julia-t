@@ -7,6 +7,16 @@ Use `julia-t` in place of `julia` to run `julia` with appropriate
 `$JULIA_NUM_THREADS`.  Arguments are passed to `julia` as-is except for
 `--julia` option that controls the actual `julia` binary to be used.
 
+## Installation
+
+`julia-t` is just a simple Python script.  It can be installed by, for
+example:
+
+    wget https://raw.githubusercontent.com/tkf/julia-t/master/julia-t
+    chmod u+x julia-t
+
+## Using `julia-t` with `Distributed`
+
 This script is useful for launching multi-threaded Julia workers with
 `Distributed.addprocs`:
 
