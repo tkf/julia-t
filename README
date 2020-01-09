@@ -23,7 +23,7 @@ This script is useful for launching multi-threaded Julia workers with
 
 Use `--julia` option if there are multiple `julia` binaries:
 
-    addprocs(1, exename="julia-t", exeflags=`--julia=$(Base.julia_exename())`)
+    addprocs(1, exename="julia-t", exeflags=`--julia=$(Base.julia_cmd().exec[1])`)
 
 optional arguments:
   -h, --help          show this help message and exit
