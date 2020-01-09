@@ -65,16 +65,21 @@ def physical_cores():
     return len({r[1] for r in rows})
 
 
-def julia_t(julia, args):
-    if "JULIA_NUM_THREADS" not in os.environ:
-        os.environ["JULIA_NUM_THREADS"] = str(physical_cores())
+def default_nthreads():
+    if "JULIA_NUM_THREADS" in os.environ:
+        return os.environ["JULIA_NUM_THREADS"]
+    return physical_cores()
+
+
+def julia_t(julia, nthreads, args):
+    os.environ["JULIA_NUM_THREADS"] = str(nthreads)
     cmd = [julia] + list(args)
     os.execvp(cmd[0], cmd)
 
 
 def main(args=None):
     parser = argparse.ArgumentParser(
-        usage="%(prog)s [-h] [--julia JULIA] [args...]",
+        usage="%(prog)s [-h] [-t N] [--julia JULIA] [args...]",
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -87,6 +92,18 @@ def main(args=None):
         `julia1.3-t`, the executable named `julia1.3` is used.  Use
         symlinks for using `julia-t` with different `julia` versions;
         e.g., `ln -s julia-t julia1.3-t`.
+        (default: %(default)s)
+        """,
+    )
+    parser.add_argument(
+        "--nthreads",
+        "-t",
+        metavar="N",
+        default=default_nthreads(),
+        help="""
+        The value of `$JULIA_NUM_THREADS` to be used by `julia`.
+        Environment variable `$JULIA_NUM_THREADS` is used as-is if it
+        is set.  Otherwise default to the number of physical cores.
         (default: %(default)s)
         """,
     )
