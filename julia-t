@@ -4,9 +4,17 @@
 Run `julia` with `JULIA_NUM_THREADS=<number of physical cores>`.
 
 Use `julia-t` in place of `julia` to run `julia` with appropriate
-`$JULIA_NUM_THREADS`.  Arguments are passed to `julia` as-is except
-for `--julia` option that controls the actual `julia` binary to be
-used.
+`$JULIA_NUM_THREADS`.  Arguments are passed to `julia` as-is except for
+`--julia` option that controls the actual `julia` binary to be used.
+
+This script is useful for launching multi-threaded Julia workers with
+`Distributed.addprocs`:
+
+    addprocs(1, exename="julia-t")
+
+Use `--julia` option if there are multiple `julia` binaries:
+
+    addprocs(1, exename="julia-t", exeflags=`--julia=$(Base.julia_exename())`)
 """
 
 # Copyright (c) 2020 Takafumi Arakaki <aka.tkf@gmail.com>
