@@ -1,0 +1,24 @@
+usage: julia-t [-h] [--julia JULIA] [args...]
+
+Run `julia` with `JULIA_NUM_THREADS=<number of physical cores>`.
+
+Use `julia-t` in place of `julia` to run `julia` with appropriate
+`$JULIA_NUM_THREADS`.  Arguments are passed to `julia` as-is except for
+`--julia` option that controls the actual `julia` binary to be used.
+
+This script is useful for launching multi-threaded Julia workers with
+`Distributed.addprocs`:
+
+    addprocs(1, exename="julia-t")
+
+Use `--julia` option if there are multiple `julia` binaries:
+
+    addprocs(1, exename="julia-t", exeflags=`--julia=$(Base.julia_exename())`)
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --julia JULIA  Julia binary to be used. Default value is the file name of
+                 this script without the suffix `-t`. If this script is called
+                 `julia1.3-t`, the executable named `julia1.3` is used. Use
+                 symlinks for using `julia-t` with different `julia` versions;
+                 e.g., `ln -s julia-t julia1.3-t`. (default: julia)
